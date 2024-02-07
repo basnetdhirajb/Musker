@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save #after saving something, we went to do something
+from django.db.models.signals import post_save #after saving something, we want to do something
 from django.dispatch import receiver
 
 # Create your models here.
