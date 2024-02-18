@@ -6,9 +6,25 @@
 <div class="container text-center">
     <div class="row">
         <div class="col-8">
+            <br>
             <h1>{{profile.user.username}}'s Profile</h1>
+
+            {% for meep in meeps %}
+   
+            <div class="alert alert-light" role="alert">{{meep.body}}
+                <br>
+            <small class = "text-muted">
+               {{ meep.createdAt}} By 
+               @{{meep.user.username}}
+            </small>
+            </div>
+            {% endfor %}
+
         </div>
         <div class="col-4">
+            <br>
+            <br>
+            <br>
             <br>
             <div class="card">
                 <div class="card-header">

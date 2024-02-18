@@ -26,3 +26,19 @@ def createProfile(sender,instance,created,**kwargs):
             userProfile.save()
 
 #post_save.connect(createProfile, sender=User)
+
+#create model for status
+class Meep(models.Model):
+    user = models.ForeignKey(
+        User, related_name = 'meeps', on_delete = models.DO_NOTHING
+    )
+    body = models.CharField(max_length = 200)
+    createdAt = models.DateTimeField(auto_now_add = True)
+    
+    def __str__(self):
+        return(
+            f"{self.user} "
+            f"({self.createdAt: %Y-%m-%d}): "
+            f"{self.body}..."
+        )
+    
