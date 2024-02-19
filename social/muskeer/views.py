@@ -2,9 +2,9 @@ from django.shortcuts import render, redirect
 from .models import Profile, Meep
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .forms import MeepForm
+from .forms import MeepForm, SignUpForm
 from django.contrib.auth import authenticate, login, logout
-
+from django.contrib.auth.forms import UserCreationForm
 
 # Create your views here.
 def home(request):
@@ -79,3 +79,25 @@ def logoutUser(request):
     logout(request)
     messages.success(request, ("You have been logged out"))
     return redirect('home')
+
+def registerUser(request):
+    form = SignUpForm()
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password1']
+            #firstName = form.cleaned_data['firstName']
+            #lastName = form.cleaned_data['lastName']
+            #email = form.cleaned_data['email']
+            
+            #login user
+            user = authenticate(username=username, password=password)
+            login(request, user)
+            messages.success(request, "You have been registered!")
+            return redirect('home')
+        else:
+            messages.success(request, form.error_messages)
+    else:
+        return render(request, 'register.html', {'form': form})

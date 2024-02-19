@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+{% if user.is_authenticated %}
+<h1> You are already logged in! </h1>
+
+{% else %}
+<div class = "col-md-6 offset-md-3">
+<h1> Register </h1>
+<br>
+<form action="{% url 'register' %}" method="POST">
+    {% csrf_token %}
+    {{form.as_p}}
+    <br>
+    <button class = "btn btn-primary" type = "submit" >Register</button>
+</form>
+</div>
+
+{% endif %}
+
+{% endblock %}
