@@ -2,9 +2,10 @@ from django.shortcuts import render, redirect
 from .models import Profile, Meep
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .forms import MeepForm, SignUpForm
+from .forms import MeepForm, SignUpForm, UpdateUserForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 # Create your views here.
 def home(request):
@@ -101,3 +102,20 @@ def registerUser(request):
             messages.success(request, form.error_messages)
     else:
         return render(request, 'register.html', {'form': form})
+    
+def updateProfile(request):
+
+    if request.user.is_authenticated:
+        currentUser = User.objects.get(id = request.user.id)
+        form = UpdateUserForm(request.POST or None, instance = currentUser)
+        
+        if form.is_valid():
+            form.save()
+            login(request,currentUser)
+            messages.success(request, ("Your profile has been updated"))
+            return redirect('home')
+        
+        return render(request, 'update_profile.html', {'form':form})
+    else:
+        messages.success(request, 'You must be logged in to view this page!')
+        return redirect('home')

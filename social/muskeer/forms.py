@@ -24,18 +24,18 @@ class SignUpForm(UserCreationForm):
         "placeholder": "Email",
         "class" : "form-control"
     }))
-    firstName = forms.CharField( max_length= 100 ,label="", widget= forms.TextInput(attrs={
+    first_name = forms.CharField( max_length= 100 ,label="", widget= forms.TextInput(attrs={
         "placeholder": "First Name",
         "class" : "form-control"
     }))
-    lastName = forms.CharField( max_length= 100 ,label="", widget= forms.TextInput(attrs={
+    last_name = forms.CharField( max_length= 100 ,label="", widget= forms.TextInput(attrs={
         "placeholder": "Last Name",
         "class" : "form-control"
     }))
     
     class Meta:
         model = User
-        fields = ['username', 'firstName', 'lastName', 'email', 'password1', 'password2']
+        fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
         
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
@@ -58,4 +58,35 @@ class SignUpForm(UserCreationForm):
         self.fields['password2'].label = ''
         self.fields['password2'].help_text = '<span class = "form-text text-muted small "><small> Enter the same password as before, for verification. </small></span>'
         
-       
+class UpdateUserForm(forms.ModelForm):
+    
+    email = forms.EmailField(label="", widget= forms.TextInput(attrs={
+        "placeholder": "Email",
+        "class" : "form-control"
+    }))
+    
+    first_name = forms.CharField( max_length= 100 ,label="", widget= forms.TextInput(attrs={
+        "placeholder": "First Name",
+        "class" : "form-control"
+    }))
+    
+    last_name = forms.CharField( max_length= 100 ,label="", widget= forms.TextInput(attrs={
+        "placeholder": "Last Name",
+        "class" : "form-control"
+    }))
+    
+    password = forms.PasswordInput()
+    
+    class Meta:
+        model = User
+        fields = ['username', 'first_name', 'last_name', 'email']
+        
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        
+        #This is customized here because they cannot be done like we did for first name and last name
+        #Overriding the default attributes and help texts
+        self.fields['username'].widget.attrs['class'] = 'form-control'
+        self.fields['username'].widget.attrs['placeholder'] = 'Username'
+        self.fields['username'].label = ''
+        self.fields['username'].help_text = '<span class = "form-text text-muted"><small> Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only. </small></span>'
