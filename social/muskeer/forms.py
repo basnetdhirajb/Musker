@@ -1,6 +1,6 @@
 from typing import Any
 from django import forms
-from .models import Meep
+from .models import Meep, Profile
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
@@ -75,7 +75,6 @@ class UpdateUserForm(forms.ModelForm):
         "class" : "form-control"
     }))
     
-    password = forms.PasswordInput()
     
     class Meta:
         model = User
@@ -90,3 +89,16 @@ class UpdateUserForm(forms.ModelForm):
         self.fields['username'].widget.attrs['placeholder'] = 'Username'
         self.fields['username'].label = ''
         self.fields['username'].help_text = '<span class = "form-text text-muted"><small> Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only. </small></span>'
+        
+class ProfilePictureForm(forms.ModelForm):
+    
+    profileImage = forms.ImageField(label="Profile Picture")
+    
+    class Meta:
+        model = Profile
+        fields = ['profileImage']
+        
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self.fields['profileImage'].required = False
+        

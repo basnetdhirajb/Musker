@@ -10,10 +10,11 @@
 <div class = "col-md-6 offset-md-3">
 <h1> Register </h1>
 <br>
-<form action="{% url 'register' %}" method="POST">
+<form action="{% url 'register' %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-    {{form.as_p}}
+    {{userForm.as_p}}
     <br>
+    {{profileForm.as_p}}
     <button class = "btn btn-primary" type = "submit" >Register</button>
 </form>
 </div>

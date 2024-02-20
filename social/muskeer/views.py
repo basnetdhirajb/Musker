@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from .models import Profile, Meep
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .forms import MeepForm, SignUpForm, UpdateUserForm
+from .forms import MeepForm, SignUpForm, UpdateUserForm, ProfilePictureForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -82,13 +82,14 @@ def logoutUser(request):
     return redirect('home')
 
 def registerUser(request):
-    form = SignUpForm()
+    userForm = SignUpForm()
+    profileForm = ProfilePictureForm()
     if request.method == 'POST':
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password1']
+        userForm = SignUpForm(request.POST)
+        if userForm.is_valid():
+            userForm.save()
+            username = userForm.cleaned_data['username']
+            password = userForm.cleaned_data['password1']
             #firstName = form.cleaned_data['firstName']
             #lastName = form.cleaned_data['lastName']
             #email = form.cleaned_data['email']
@@ -96,26 +97,39 @@ def registerUser(request):
             #login user
             user = authenticate(username=username, password=password)
             login(request, user)
+            
+            #Set up profile picture
+            userProfile = Profile.objects.get(user__id = user.id)
+            profileForm = ProfilePictureForm(request.POST or None, request.FILES or None, instance= userProfile)
+            
+            if profileForm.is_valid():
+                profileForm.save()
+            else:
+                messages.success(request, "Unable to upload profile picture!")
+                
             messages.success(request, "You have been registered!")
             return redirect('home')
         else:
-            messages.success(request, form.error_messages)
-    else:
-        return render(request, 'register.html', {'form': form})
+            messages.success(request, userForm.error_messages)
+            
+    return render(request, 'register.html', {'userForm': userForm, 'profileForm':profileForm})
     
 def updateProfile(request):
 
     if request.user.is_authenticated:
         currentUser = User.objects.get(id = request.user.id)
-        form = UpdateUserForm(request.POST or None, instance = currentUser)
+        profileUser = Profile.objects.get(user__id = request.user.id)
+        userForm = UpdateUserForm(request.POST or None, request.FILES or None, instance = currentUser)
+        profileForm = ProfilePictureForm(request.POST or None, request.FILES or None, instance = profileUser)
         
-        if form.is_valid():
-            form.save()
+        if userForm.is_valid() and profileForm.is_valid():
+            userForm.save()
+            profileForm.save()
             login(request,currentUser)
             messages.success(request, ("Your profile has been updated"))
             return redirect('home')
         
-        return render(request, 'update_profile.html', {'form':form})
+        return render(request, 'update_profile.html', {'userForm':userForm, 'profileForm':profileForm})
     else:
         messages.success(request, 'You must be logged in to view this page!')
         return redirect('home')

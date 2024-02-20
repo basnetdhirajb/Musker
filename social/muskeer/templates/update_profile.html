@@ -7,9 +7,13 @@
 <br>
 <h1> Update Profile </h1>
 <br>
-<form action="{% url 'update_profile' %}" method="POST">
+{% comment %} encoding type needs to be added to allow images or files {% endcomment %}
+<form action="{% url 'update_profile' %}" method="POST" enctype = "multipart/form-data">
     {% csrf_token %}
-    {{form.as_p}}
+    
+    {{userForm.as_p}}
+    <br>
+    {{profileForm.as_p}}
     <br>
     <button class = "btn btn-primary" type = "submit" >Update Profile</button>
 </form>

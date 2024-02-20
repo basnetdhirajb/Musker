@@ -10,6 +10,7 @@ class Profile(models.Model):
     follows = models.ManyToManyField("self", related_name="followed_by", symmetrical=False, blank=True)
     
     modifiedDate = models.DateTimeField(auto_now = True)
+    profileImage = models.ImageField(null=True, blank=True, upload_to= "images/")
     
     def __str__(self):
         return self.user.username
