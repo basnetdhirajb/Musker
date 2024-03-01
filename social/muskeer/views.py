@@ -6,6 +6,7 @@ from .forms import MeepForm, SignUpForm, UpdateUserForm, ProfilePictureForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 def home(request):
@@ -133,3 +134,19 @@ def updateProfile(request):
     else:
         messages.success(request, 'You must be logged in to view this page!')
         return redirect('home')
+    
+def likeMeep(request, pk):
+    if request.user.is_authenticated:
+        meep = get_object_or_404(Meep, id = pk)
+        if meep.likes.filter(id = request.user.id):
+            meep.likes.remove(request.user)
+        else:
+            meep.likes.add(request.user)
+        
+        return redirect('home')
+            
+    else:
+        messages.success(request,("You must be logged in to view this page!"))
+        return redirect('home')
+    
+         

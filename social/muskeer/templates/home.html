@@ -19,11 +19,13 @@
                      <img src="{% static 'images/default_profile.jpg' %}" class="img-fluid rounded-start" alt="...">
                      {% endif %}
                   </div>
-                  <div class="col-11">
+                  <div class="col-11y">
                      {{meep.body}}<br>
                      <small class="text-muted">
                         {{ meep.createdAt}} By
                         @{{meep.user.username}}
+                        <br>
+                        {{meep.numberOfLikes}} Likes - <a href ='{% url 'likeMeep' meep.id %}' >Like This!</a>
                      </small>
                   </div>
 
