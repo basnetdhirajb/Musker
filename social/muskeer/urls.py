@@ -10,4 +10,5 @@ urlpatterns = [
     path('register/', views.registerUser, name = 'register'),
     path('update_profile/', views.updateProfile, name = 'update_profile'),
     path('meep_like/<int:pk>', views.likeMeep, name = 'likeMeep'),
+    path('meep_share/<int:pk>', views.shareMeep, name = 'shareMeep'),
 ]

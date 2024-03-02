@@ -120,7 +120,7 @@ def updateProfile(request):
     if request.user.is_authenticated:
         currentUser = User.objects.get(id = request.user.id)
         profileUser = Profile.objects.get(user__id = request.user.id)
-        userForm = UpdateUserForm(request.POST or None, request.FILES or None, instance = currentUser)
+        userForm = UpdateUserForm(request.POST or None, instance = currentUser)
         profileForm = ProfilePictureForm(request.POST or None, request.FILES or None, instance = profileUser)
         
         if userForm.is_valid() and profileForm.is_valid():
@@ -143,10 +143,20 @@ def likeMeep(request, pk):
         else:
             meep.likes.add(request.user)
         
-        return redirect('home')
+        #print(request.META.get('HTTP_REFERER'))
+        #Gives what page we are getting the request from to this view
+        return redirect(request.META.get('HTTP_REFERER'))
             
     else:
         messages.success(request,("You must be logged in to view this page!"))
         return redirect('home')
     
-         
+def shareMeep(request, pk):
+    if request.user.is_authenticated:
+        meep = get_object_or_404(Meep, id=pk)
+        if meep:
+            return render(request,'show_meep.html',{'meep':meep})
+        else:
+            messages.success(request, ('Meep does not exist!'))
+            return redirect('home')
+        
