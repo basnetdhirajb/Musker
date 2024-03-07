@@ -8,9 +8,14 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete = models.CASCADE) #Associating one user to one profile
     #A profile can follow many other profiles
     follows = models.ManyToManyField("self", related_name="followed_by", symmetrical=False, blank=True)
-    
     modifiedDate = models.DateTimeField(auto_now = True)
     profileImage = models.ImageField(null=True, blank=True, upload_to= "images/")
+    profileBio = models.CharField(null = True, blank = True, max_length = 500)
+    homepageLink = models.CharField(null = True, blank = True, max_length = 100)
+    facebookLink = models.CharField(null = True, blank = True, max_length = 100)
+    instagramLink = models.CharField(null = True, blank = True, max_length = 100)
+    linkedInLink = models.CharField(null = True, blank = True, max_length = 100)
+    
     
     def __str__(self):
         return self.user.username

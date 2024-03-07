@@ -93,10 +93,31 @@ class UpdateUserForm(forms.ModelForm):
 class ProfilePictureForm(forms.ModelForm):
     
     profileImage = forms.ImageField(label="Profile Picture")
+    profileBio = forms.CharField(label="", widget= forms.TextInput(attrs={
+        "placeholder": "Profile Bio",
+        "class" : "form-control"
+    }))
+    homepageLink = forms.CharField(label="", widget= forms.TextInput(attrs={
+        "placeholder": "Homepage Link",
+        "class" : "form-control"
+    }))
+    facebookLink = forms.CharField(label="", widget= forms.TextInput(attrs={
+        "placeholder": "Facebook Link",
+        "class" : "form-control"
+    }))
+    instagramLink = forms.CharField(label="", widget= forms.TextInput(attrs={
+        "placeholder": "Instagram Link",
+        "class" : "form-control"
+    }))
+    linkedInLink = forms.CharField(label="", widget= forms.TextInput(attrs={
+        "placeholder": "LinkedIn Link",
+        "class" : "form-control"
+    }))
+    
     
     class Meta:
         model = Profile
-        fields = ['profileImage']
+        fields = ['profileImage','profileBio','homepageLink','facebookLink','instagramLink','linkedInLink',]
         
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)

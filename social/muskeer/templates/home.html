@@ -7,7 +7,6 @@
       <div class="col-8">
          <br>
          <h1>Meeps!</h1>
-
          {% for meep in meeps %}
          <div class="alert alert-light" role="alert">
             <div class="container">
@@ -19,7 +18,7 @@
                      <img src="{% static 'images/default_profile.jpg' %}" class="img-fluid rounded-start" alt="...">
                      {% endif %}
                   </div>
-                  <div class="col-11y">
+                  <div class="col-11">
                      {{meep.body}}<br>
                      <small class="text-muted">
                         {{ meep.createdAt}} By

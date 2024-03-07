@@ -51,7 +51,33 @@
             {% endif %}
             <br>
             <br>
-            
+
+            {% if profile.homepageLink%}
+            <a href = "{{profile.homepageLink}}" target = "new" style = "color: grey"><i class="fa-solid fa-house"></i></a>
+            {% endif %}
+            &nbsp;
+
+            {% if profile.facebookLink%}
+            <a href = "{{profile.facebookLink}}" target = "new" ><i class="fa-brands fa-facebook"></i></a>
+            {% endif %}
+            &nbsp;
+
+            {% if profile.instagramLink%}
+            <a href = "{{profile.instagramLink}}" target = "new" style = "color: red"><i class="fa-brands fa-instagram"></i></a>
+            {% endif %}
+            &nbsp;
+
+            {% if profile.linkedInLink%}
+            <a href = "{{profile.linkedInLink}}" target = "new"><i class="fa-brands fa-linkedin"></i></a>
+            {% endif %}
+
+
+            <br><br>
+            {% if profile.profileBio%}
+            {{profile.profileBio}}
+            {% endif %}
+            <br><br>
+
             <div class="card">
                 <div class="card-header">
                     Follows
