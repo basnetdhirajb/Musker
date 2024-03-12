@@ -85,7 +85,11 @@
                 <div class="card-body">
                     <p class="card-text">
                         {% for following in profile.follows.all %}
-                        <a href="{% url 'profile' following.user.id %}"> @{{following}}<br /> </a>
+                        <a href="{% url 'profile' following.user.id %}"> @{{following}}</a>
+                        &nbsp;
+                        <a href = "{% url 'unfollowUser' following.user.id %}" class = "btn btn-outline-secondary "> <i class="fa-solid fa-minus fa-2xs" style="color: #b21515;"></i></a>
+                        <br>
+                        <br>
                         {% endfor %}
                     </p>
                 </div>
@@ -112,7 +116,6 @@
                 <button class = "btn btn-outline-danger" name = "follow" value="unfollow" type = "submit">Unfollow @{{profile.user.username|lower}}</button>
                 {% else %}
                 <button class = "btn btn-outline-success" name = "follow" value = "follow" type = "submit" >Follow @{{profile.user.username|lower}}</button>
-
                 {% endif %}
             {% endif %}
 

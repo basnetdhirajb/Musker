@@ -159,4 +159,19 @@ def shareMeep(request, pk):
         else:
             messages.success(request, ('Meep does not exist!'))
             return redirect('home')
+
+def unfollowUser(request, pk):
+    if request.user.is_authenticated:
+        #get the user to unfollow
+        profileToUnfollow = Profile.objects.get(user_id = pk)
+        #unfollow user
+        request.user.profile.follows.remove(profileToUnfollow)
+        #save profile
+        request.user.profile.save()
+        
+        messages.success(request, (f"Unfollowed {profileToUnfollow.user.username}"))
+        #Gives what page we are getting the request from to this view
+        return redirect(request.META.get('HTTP_REFERER'))
+    else:
+        return redirect('home')
         
