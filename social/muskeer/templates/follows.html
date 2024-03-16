@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+   <h1>{{user.username}} Follows</h1> 
+   <br>
+
+   {% if follows %}
+        {% for follow in follows %}
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row">
+                  <div class="col-md-4">
+                    {% if follower.profileImage%}
+                    <img src="{{follow.profileImage.url}}" class="img-fluid rounded-start" alt="...">
+                    {% else %}
+                    <img src="{% static 'images/default_profile.jpg' %}" class="img-fluid rounded-start" alt="...">
+                    {% endif %}
+                  </div>
+                  <div class="col-md-8">
+                    <div class="card-body">
+                      <h5 class="card-title">{{follow.user.username}}</h5>
+                      <p class="card-text"><a href="{% url 'profile' follow.user.id %}">@{{follow.user.username|lower}}</a></p>
+                        {% if follow not in user.profile.follows.all %}
+                            <a href = "{% url 'followUser' follow.user.id %}" class = "btn btn-outline-secondary "> <i class="fa-solid fa-user-plus fa-2xs" style="color: green;"></i></a>
+                        {% else %}
+                            <a href = "{% url 'unfollowUser' follow.user.id %}" class = "btn btn-outline-secondary "> <i class="fa-solid fa-user-minus fa-2xs" style="color: #b21515;"></i></a>
+                        {% endif %}
+                      <br>
+                      <br>
+                      <p class="card-text"><small class="text-body-secondary">Last Updated {{follow.modifiedDate}}</small></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        {% endfor %}
+
+              
+   {% endif %}
+
+{% endblock %}

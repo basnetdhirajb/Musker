@@ -29,13 +29,17 @@
                                 <br>
                                 {{meep.numberOfLikes}} 
                                 {% if user in meep.likes.all %}
-                                    <a href ='{% url 'likeMeep' meep.id %}'><i class="fa-solid fa-heart" style="color: #dd0808;"></i></a>
+                                    <a href ="{% url 'likeMeep' meep.id %}"><i class="fa-solid fa-heart" style="color: #dd0808;"></i></a>
                                 {% else %}
-                                    <a href ='{% url 'likeMeep' meep.id %}'><i class="fa-regular fa-heart" style="color: #dd0808;"></i></a>
+                                    <a href ="{% url 'likeMeep' meep.id %}"><i class="fa-regular fa-heart" style="color: #dd0808;"></i></a>
                                 {% endif %}
                                 &nbsp;
-                                <a href = '{% url 'shareMeep' meep.id %}' > <i class="fa-solid fa-share"></i> </a> 
-                             </small>
+                                <a href = "{% url 'shareMeep' meep.id %}" ><i class="fa-solid fa-share"></i></a>
+                                &nbsp;
+                                {% if user.id == profile.user.id %}
+                                <a href = "{% url 'deleteMeep' meep.id %}" ><i class="fa-solid fa-trash"></i></a> 
+                                {% endif %}
+                            </small>
                         </div>
                     </div>
                 </div>   
@@ -84,15 +88,21 @@
                 </div>
                 <div class="card-body">
                     <p class="card-text">
-                        {% for following in profile.follows.all %}
+                        {% for following in profile.follows.all|slice:3 %}
                         <a href="{% url 'profile' following.user.id %}"> @{{following}}</a>
                         &nbsp;
-                        <a href = "{% url 'unfollowUser' following.user.id %}" class = "btn btn-outline-secondary "> <i class="fa-solid fa-minus fa-2xs" style="color: #b21515;"></i></a>
+                        <!-- Only show unfollow for currently logged in user -->
+                        {% if user.profile == profile  %}
+                        <a href = "{% url 'unfollowUser' following.user.id %}" class = "btn btn-outline-secondary "> <i class="fa-solid fa-user-minus fa-2xs" style="color: #b21515;"></i></a>
+                        {% endif %}
                         <br>
                         <br>
                         {% endfor %}
                     </p>
                 </div>
+                <div class="card-footer text-end">
+                    <a class = "btn btn-outline-secondary" href = "{% url 'follows' user.id %}">See More</a>
+                  </div>
             </div>
             <br><br>
             <div class="card">
@@ -101,11 +111,22 @@
                 </div>
                 <div class="card-body">
                     <p class="card-text">
-                        {% for following in profile.followed_by.all %}
-                        <a href="{% url 'profile' following.user.id %}"> @{{following}}<br /> </a>
+                        {% for follower in profile.followed_by.all|slice:3 %}
+                        <a href="{% url 'profile' follower.user.id %}"> @{{follower}}</a>
+                        &nbsp;
+                        {% if user.profile == profile %}
+                        {% if follower not in profile.follows.all %}
+                        <a href = "{% url 'followUser' follower.user.id %}" class = "btn btn-outline-secondary "> <i class="fa-solid fa-user-plus fa-2xs" style="color: green;"></i></a>
+                        {% endif %}
+                        {% endif %}
+                        <br>
+                        <br>
                         {% endfor %}
                     </p>
                 </div>
+                <div class="card-footer text-end">
+                    <a class = "btn btn-outline-secondary" href = "{% url 'followers' user.id %}">See More</a>
+                  </div>
             </div>
             <br>
 

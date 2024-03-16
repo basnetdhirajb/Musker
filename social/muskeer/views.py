@@ -174,4 +174,56 @@ def unfollowUser(request, pk):
         return redirect(request.META.get('HTTP_REFERER'))
     else:
         return redirect('home')
+
+def followUser(request, pk):
+        if request.user.is_authenticated:
+            profileToFollow = Profile.objects.get(user_id = pk)
+            request.user.profile.follows.add(profileToFollow)
+            request.user.profile.save()
+            
+            messages.success(request, (f"Started Following {profileToFollow}"))
+            return redirect(request.META.get('HTTP_REFERER'))
+        else:
+            return redirect('home')
         
+def followers(request, pk):
+    if request.user.is_authenticated:
+        if request.user.id == pk:
+            followers = request.user.profile.followed_by.all()
+            return render(request, 'followers.html', {'followers': followers})
+            
+        else:
+            messages.success(request, ("You caannot view this page!")) 
+            return redirect('home')
+    else:
+        messages.success(request, ("You must be logged in to view this page"))
+        return redirect('home')
+
+def follows(request, pk):
+    if request.user.is_authenticated:
+        
+        if request.user.id == pk:
+            follows = request.user.profile.follows.all()
+            return render(request, 'follows.html', {'follows': follows})
+            
+        else:
+            messages.success(request, ("You caannot view this page!")) 
+            return redirect('home')
+        
+    else:
+        messages.success(request, ("You must be logged in to view this page"))
+        return redirect('home')
+
+def deleteMeep(request, pk):
+    if request.user.is_authenticated:
+        meepToDelete = get_object_or_404(Meep, id = pk)
+        if meepToDelete.user.id == request.user.id:
+            #Able to delete the meep
+            meepToDelete.delete()
+            messages.success(request, ("Meep Deleted!"))
+        else:
+            messages.success(request, ("Not your Meep"))
+        return redirect('home')
+    else:
+        messages.success(request, ("You must be logged in to view this page"))
+        return redirect('home')
