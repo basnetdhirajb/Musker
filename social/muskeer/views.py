@@ -248,3 +248,11 @@ def editMeep(request, pk):
     else:
         messages.success(request, ("You have to log in to view this page"))
         return redirect('home')
+    
+def search(request):
+    if request.method == 'POST':
+        searchTerm = request.POST['search']
+        meepResult = Meep.objects.filter(body__contains = searchTerm)
+        return render(request, 'search.html', {'result':meepResult, 'searchTerm': searchTerm})
+    else:
+        return render(request, 'search.html', {})   

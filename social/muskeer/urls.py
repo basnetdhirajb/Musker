@@ -17,4 +17,5 @@ urlpatterns = [
     path('meep_edit/<int:pk>', views.editMeep, name = 'editMeep'),
     path('unfollow/<int:pk>', views.unfollowUser, name = 'unfollowUser'),
     path('followUser/<int:pk>', views.followUser, name= 'followUser'),
+    path('search/', views.search, name = 'search'),
 ]
