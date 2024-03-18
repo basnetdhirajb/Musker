@@ -227,3 +227,24 @@ def deleteMeep(request, pk):
     else:
         messages.success(request, ("You must be logged in to view this page"))
         return redirect('home')
+
+def editMeep(request, pk):
+    if request.user.is_authenticated:
+        meepToEdit = get_object_or_404(Meep, id = pk)
+        form = MeepForm(request.POST or None, instance= meepToEdit)
+        if meepToEdit.user.id == request.user.id:
+            if request.method == 'POST':
+                if form.is_valid():
+                    meepToEdit = form.save(commit=False)
+                    meepToEdit.save()
+                    messages.success(request, ("Your meep has been updated!"))
+                    return redirect('home')
+            else:
+                return render(request, 'edit_meep.html', {'form': form, 'meep': meepToEdit})
+        else:
+            messages.success(request, ("This is not your Meep to edit"))
+            return redirect(request.META.get('HTTP_REFERER'))
+        
+    else:
+        messages.success(request, ("You have to log in to view this page"))
+        return redirect('home')

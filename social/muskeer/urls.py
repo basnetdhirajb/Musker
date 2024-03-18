@@ -14,6 +14,7 @@ urlpatterns = [
     path('meep_like/<int:pk>', views.likeMeep, name = 'likeMeep'),
     path('meep_share/<int:pk>', views.shareMeep, name = 'shareMeep'),
     path('meep_delete/<int:pk>', views.deleteMeep, name = 'deleteMeep'),
+    path('meep_edit/<int:pk>', views.editMeep, name = 'editMeep'),
     path('unfollow/<int:pk>', views.unfollowUser, name = 'unfollowUser'),
     path('followUser/<int:pk>', views.followUser, name= 'followUser'),
 ]
