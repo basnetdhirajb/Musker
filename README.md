@@ -13,3 +13,4 @@ Functionalities that have been added
 - User can follow/unfollow other users
 - User can upload a profile picture
 - User can search for posts or users
+- User can view a list of followers and people they follow
