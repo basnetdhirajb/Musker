@@ -2,39 +2,82 @@
 {%load static %}
 
 {%block content %}
+<div class = "container">
+    <div class = "row">
+        <div class = "col-8">
+            {% if meepResult %}
+            <h3>Meep Found containing: {{meepSearch}}</h3>
+                {% for meep in meepResult %}
+                    <div class="alert alert-light" role="alert">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-1">
+                                {% if meep.user.profile.profileImage%}
+                                <img  src="{{meep.user.profile.profileImage.url}}" class="img-fluid rounded-start" alt="...">
+                                {% else %}
+                                <img src="{% static 'images/default_profile.jpg' %}" class="img-fluid rounded-start" alt="...">
+                                {% endif %}
+                            </div>
+                        <div class="col-11">
+                            {{meep.body}}<br>
+                            <small class="text-muted">
+                            {{ meep.createdAt}} By
+                            @{{meep.user.username}}
+                            <br>
+                            {{meep.numberOfLikes}}
+                            {% if user in meep.likes.all %}
+                            <a href ='{% url 'likeMeep' meep.id %}' ><i class="fa-solid fa-heart" style="color: #dd0808;"></i></a>
+                            {% else %}
+                            <a href ='{% url 'likeMeep' meep.id %}' ><i class="fa-regular fa-heart" style="color: #dd0808;"></i></a>
+                            {% endif %}
+                            &nbsp;
+                            <a href = '{% url 'shareMeep' meep.id %}' > <i class="fa-solid fa-share"></i> </a> 
+                            </small>
+                        </div>
 
-{% for meep in result %}
-<div class="alert alert-light" role="alert">
-   <div class="container">
-      <div class="row">
-         <div class="col-1">
-            {% if meep.user.profile.profileImage%}
-            <img  src="{{meep.user.profile.profileImage.url}}" class="img-fluid rounded-start" alt="...">
-            {% else %}
-            <img src="{% static 'images/default_profile.jpg' %}" class="img-fluid rounded-start" alt="...">
-            {% endif %}
-         </div>
-         <div class="col-11">
-            {{meep.body}}<br>
-            <small class="text-muted">
-               {{ meep.createdAt}} By
-               @{{meep.user.username}}
-               <br>
-               {{meep.numberOfLikes}}
-               {% if user in meep.likes.all %}
-               <a href ='{% url 'likeMeep' meep.id %}' ><i class="fa-solid fa-heart" style="color: #dd0808;"></i></a>
-               {% else %}
-               <a href ='{% url 'likeMeep' meep.id %}' ><i class="fa-regular fa-heart" style="color: #dd0808;"></i></a>
-               {% endif %}
-               &nbsp;
-               <a href = '{% url 'shareMeep' meep.id %}' > <i class="fa-solid fa-share"></i> </a> 
-            </small>
-         </div>
+                    </div>
+                </div>
+                </div>
+                {% endfor %}
+            {%else%}
+                <h3>No meep found containing: {{meepSearch}}</h3>
+            {%endif%}
+        </div>
+        <div class = "col-4">
+        {% if userResult %}
+        <h3>User found containing: {{meepSearch}}</h3>
+        {% for user in userResult %}
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row">
+                  <div class="col-md-4">
+                    {% if user.profile.profileImage%}
+                    <img src="{{user.profile.profileImage.url}}" class="img-fluid rounded-start" alt="...">
+                    {% else %}
+                    <img src="{% static 'images/default_profile.jpg' %}" class="img-fluid rounded-start" alt="...">
+                    {% endif %}
+                  </div>
+                  <div class="col-md-8">
+                    <div class="card-body">
+                      <h5 class="card-title">{{user.username}}</h5>
+                      <p class="card-text"><a href="{% url 'profile' user.id %}">@{{user.username|lower}}</a></p>
+                      <br>
+                      <p class="card-text"><small class="text-body-secondary">Last Updated {{user.profile.modifiedDate}}</small></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+              {% else %}
+              <h3>No user found containing: {{meepSearch}}</h3>
+            {%endif%}
+       
 
-      </div>
-   </div>
+        </div>
+    </div>
+
 </div>
-{% endfor %}
+
+
 
 
 

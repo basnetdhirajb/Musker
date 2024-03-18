@@ -251,8 +251,10 @@ def editMeep(request, pk):
     
 def search(request):
     if request.method == 'POST':
-        searchTerm = request.POST['search']
-        meepResult = Meep.objects.filter(body__contains = searchTerm)
-        return render(request, 'search.html', {'result':meepResult, 'searchTerm': searchTerm})
+        meepSearch = request.POST['search']
+        meepResult = Meep.objects.filter(body__contains = meepSearch)
+        
+        userResult = User.objects.filter(username__contains = meepSearch)
+        return render(request, 'search.html', {'meepResult':meepResult, 'meepSearch': meepSearch, 'userResult': userResult})
     else:
         return render(request, 'search.html', {})   

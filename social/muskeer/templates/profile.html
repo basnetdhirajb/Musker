@@ -56,6 +56,8 @@
             <br>
             {% if profile.profileImage %}
             <img class = "rounded-circle" width = "200px" height = "200px" src = "{{profile.profileImage.url}}">
+            {% else %}
+            <img  class = "rounded-circle" width = "200px" height = "200px" src="{% static "images/default_profile.jpg" %}" alt="">
             {% endif %}
             <br>
             <br>
@@ -105,7 +107,7 @@
                     </p>
                 </div>
                 <div class="card-footer text-end">
-                    <a class = "btn btn-outline-secondary" href = "{% url 'follows' user.id %}">See More</a>
+                    <a class = "btn btn-outline-secondary" href = "{% url 'follows' profile.user.id %}">See More</a>
                   </div>
             </div>
             <br><br>
@@ -129,7 +131,7 @@
                     </p>
                 </div>
                 <div class="card-footer text-end">
-                    <a class = "btn btn-outline-secondary" href = "{% url 'followers' user.id %}">See More</a>
+                    <a class = "btn btn-outline-secondary" href = "{% url 'followers' profile.user.id %}">See More</a>
                   </div>
             </div>
             <br>
