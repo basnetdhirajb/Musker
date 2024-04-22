@@ -1,7 +1,7 @@
 This is a social media app that I created to better understand Django as I was learning.
 Used HTML,CSS and Bootstrap to create the front end
 Django Template Language was also used for some client side logic.
-SQL Like database was used which came build in with Django.
+SQL Lite database was used which came built in with Django.
 
 Functionalities that have been added 
 - User can register for new account.
